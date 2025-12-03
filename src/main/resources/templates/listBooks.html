@@ -1,178 +1,197 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="utf-8" />
     <title>Book Reservation - Welcome and choose a Book</title>
     <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-top: 20px;
-        }
-        .book-option {
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .book-option:hover {
-            background-color: #f5f5f5;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 25px;
-        }
-        table th, table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        table th {
-            background-color: #f2f2f2;
-            text-align: left;
-        }
-        .btn {
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 3px;
-            font-size: 0.9rem;
-        }
-        .btn-add {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .btn-edit {
-            color: #0b63c5;
-        }
-        .btn-delete {
-            color: #c52626;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+      body {
+        width: 800px;
+        margin: auto;
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        color: #333;
+      }
+      form {
+        margin-top: 20px;
+      }
+      .book-option {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .book-option:hover {
+        background-color: #f5f5f5;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+      }
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      table th {
+        background-color: #f2f2f2;
+        text-align: left;
+      }
+      .btn {
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 0.9rem;
+      }
+      .btn-add {
+        background-color: #4caf50;
+        color: white;
+      }
+      .btn-edit {
+        color: #0b63c5;
+      }
+      .btn-delete {
+        color: #c52626;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
     </style>
-</head>
-<body>
-<header>
-    <h1>Welcome to our Book Reservation App</h1>
-</header>
-<main>
-
-    <!-- Search form (од Лаб 1) -->
-    <div class="search-box">
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to our Book Reservation App</h1>
+    </header>
+    <main>
+      <!-- Search form (од Лаб 1) -->
+      <div class="search-box">
         <form th:action="@{/books}" method="get">
-            <div class="search-row">
-                <div>
-                    <label>
-                        Title contains:
-                        <input type="text" id="titleSearch" name="titleSearch"
-                               th:value="${titleSearch}">
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Min rating
-                        <input type="number" id="minRating" name="minRating"
-                               min="1" max="10" step="0.1"
-                               th:value="${minRating}">
-                    </label>
-                </div>
+          <div class="search-row">
+            <div>
+              <label>
+                Title contains:
+                <input
+                  type="text"
+                  id="titleSearch"
+                  name="titleSearch"
+                  th:value="${titleSearch}"
+                />
+              </label>
             </div>
-            <div style="margin-top:15px;">
-                <button type="submit">Search</button>
-                <a th:href="@{/books}">Clear</a>
+            <div>
+              <label>
+                Min rating
+                <input
+                  type="number"
+                  id="minRating"
+                  name="minRating"
+                  min="1"
+                  max="10"
+                  step="0.1"
+                  th:value="${minRating}"
+                />
+              </label>
             </div>
+          </div>
+          <div style="margin-top: 15px">
+            <button type="submit">Search</button>
+            <a th:href="@{/books}">Clear</a>
+          </div>
         </form>
-    </div>
+      </div>
 
-    <!-- Add Book копче (Лаб 2) -->
-    <div style="margin-top: 20px; margin-bottom: 10px;">
-        <a th:href="@{/books/book-form}"
-           class="btn btn-add">
-            Add Book
-        </a>
-    </div>
+      <!-- Add Book копче (Лаб 2) -->
+      <div style="margin-top: 20px; margin-bottom: 10px">
+        <a th:href="@{/books/book-form}" class="btn btn-add"> Add Book </a>
+      </div>
 
-    <!-- Табела со сите книги (Лаб 2) -->
-    <table>
+      <!-- Табела со сите книги (Лаб 2) -->
+      <table>
         <thead>
-        <tr>
+          <tr>
             <th>Title</th>
             <th>Genre</th>
             <th>Rating</th>
             <th>Author</th>
+            <th>Author's Books Count</th>
             <th>Actions</th>
-        </tr>
+          </tr>
         </thead>
         <tbody>
-        <tr th:each="book : ${books}">
+          <tr th:each="book : ${books}">
             <td th:text="${book.title}">Title</td>
             <td th:text="${book.genre}">Genre</td>
             <td th:text="${book.averageRating}">Rating</td>
             <td th:text="${book.author.name + ' ' + book.author.surname}">
-                Author Name
+              Author Name
             </td>
+            <td th:text="${book.author.books.size()}">0</td>
             <td>
-                <!-- Edit (GET) -->
-                <a th:href="@{'/books/book-form/' + ${book.id}}"
-                   class="btn btn-edit">
-                    Edit
-                </a>
+              <!-- Edit (GET) -->
+              <a
+                th:href="@{'/books/book-form/' + ${book.id}}"
+                class="btn btn-edit"
+              >
+                Edit
+              </a>
 
-                &nbsp;|&nbsp;
+              &nbsp;|&nbsp;
 
-                <!-- Delete (POST, како што бара задачата) -->
-                <form th:action="@{'/books/delete/' + ${book.id}}"
-                      method="post"
-                      style="display:inline;">
-                    <button type="submit" class="btn btn-delete">
-                        Delete
-                    </button>
-                </form>
+              <!-- Delete (POST, како што бара задачата) -->
+              <form
+                th:action="@{'/books/delete/' + ${book.id}}"
+                method="post"
+                style="display: inline"
+              >
+                <button type="submit" class="btn btn-delete">Delete</button>
+              </form>
             </td>
-        </tr>
+          </tr>
         </tbody>
-    </table>
+      </table>
 
-    <hr/>
+      <hr />
 
-    <!-- Reservation form (задржано од Лаб 1, само малку подобрено) -->
-    <form th:action="@{/bookReservation}" method="post">
+      <!-- Reservation form (задржано од Лаб 1, само малку подобрено) -->
+      <form th:action="@{/bookReservation}" method="post">
         <h2>Choose a book:</h2>
         <div class="book-option" th:each="book : ${books}">
-            <label>
-                <!-- подобро е да се праќа ID, не title -->
-                <input type="radio"
-                       name="bookId"
-                       th:value="${book.id}"
-                       required>
-                <span th:text="${'Title: ' + book.title
+          <label>
+            <!-- подобро е да се праќа ID, не title -->
+            <input type="radio" name="bookId" th:value="${book.id}" required />
+            <span
+              th:text="${'Title: ' + book.title
                                 + ', Genre: ' + book.genre
                                 + ', Rating: ' + book.averageRating
                                 + ', Author: '
-                                + book.author.name + ' ' + book.author.surname}">
-                </span>
-            </label>
+                                + book.author.name + ' ' + book.author.surname}"
+            >
+            </span>
+          </label>
         </div>
 
         <h2>Enter your information:</h2>
         <label>Your Name:</label>
-        <input type="text" name="readerName" required><br/>
+        <input type="text" name="readerName" required /><br />
         <label>Your Address:</label>
-        <input type="text" name="readerAddress" required><br/>
+        <input type="text" name="readerAddress" required /><br />
 
         <h2>Choose number of copies:</h2>
-        <input type="number" name="numberOfCopies" min="1" max="10" required><br/>
-        <br/>
-        <input type="submit" value="Reserve Book">
-    </form>
-</main>
-</body>
+        <input
+          type="number"
+          name="numberOfCopies"
+          min="1"
+          max="10"
+          required
+        /><br />
+        <br />
+        <input type="submit" value="Reserve Book" />
+      </form>
+    </main>
+  </body>
 </html>
