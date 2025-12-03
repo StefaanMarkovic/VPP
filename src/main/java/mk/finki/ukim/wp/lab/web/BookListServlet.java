@@ -14,7 +14,9 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "BookListServlet" , urlPatterns = {"","/books"})
 @Component
@@ -56,9 +58,18 @@ public class BookListServlet extends HttpServlet {
             books = bookService.listAll();
         }
 
+        Map<Long, Long> authorBookCounts = new HashMap<>();
+        for (Book book : books) {
+            Long authorId = book.getAuthor().getId();
+            if (!authorBookCounts.containsKey(authorId)) {
+                authorBookCounts.put(authorId, bookService.countBooksByAuthorId(authorId));
+            }
+        }
+
         context.setVariable("titleSearch",titleSearch);
         context.setVariable("minRating",minRatingParam);
         context.setVariable("books", books);
+        context.setVariable("authorBookCounts", authorBookCounts);
 
         springTemplateEngine.process("listBooks.html",context,resp.getWriter());
     }
