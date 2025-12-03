@@ -74,4 +74,9 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public Long countBooksByAuthorId(Long authorId) {
+        return bookRepository.countByAuthor_Id(authorId);
+    }
+
 }

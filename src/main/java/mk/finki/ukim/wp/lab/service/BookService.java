@@ -10,6 +10,7 @@ public interface BookService {
     List<Book> searchBooks(String text, Double rating);
     Book save(String title, String genre, Double averageRating, Long authorId);
     Book edit(Long id, String title, String genre, Double averageRating, Long authorId);
-    void deleteById(Long id);   // <--- ОВА ГО ДОДАВАМЕ
+    void deleteById(Long id);
     Book findById(Long id);
+    Long countBooksByAuthorId(Long authorId);
 }

@@ -7,6 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -74,7 +78,18 @@ public class BookController {
             model.addAttribute("error", error);
         }
 
-        model.addAttribute("books", bookService.listAll()); // сите книги
+        List<Book> books = bookService.listAll();
+        Map<Long, Long> authorBookCounts = new HashMap<>();
+
+        for (Book book : books) {
+            Long authorId = book.getAuthor().getId();
+            if (!authorBookCounts.containsKey(authorId)) {
+                authorBookCounts.put(authorId, bookService.countBooksByAuthorId(authorId));
+            }
+        }
+
+        model.addAttribute("books", books);
+        model.addAttribute("authorBookCounts", authorBookCounts);
         return "listBooks"; // listBooks.html
     }
 }
