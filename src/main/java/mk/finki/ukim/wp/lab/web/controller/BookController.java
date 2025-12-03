@@ -7,9 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+=======
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+>>>>>>> 714a0a1f6a8155138b5d3e75c75cf2a994e2451a
 
 @Controller
 @RequestMapping("/books")
@@ -17,15 +23,18 @@ public class BookController {
 
     private final BookService bookService;
     private final AuthorService authorService;
-    // constructor injection (Spring ќе го наполни BookService)
+
+    // constructor injection
     public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
     }
+
     @GetMapping("/book-form")
     public String getAddBookPage(Model model) {
 
-        model.addAttribute("book", null); // add режим
+        // add режим – немаме постоечка книга
+        model.addAttribute("book", null);
         model.addAttribute("authors", authorService.findAll());
 
         return "book-form";
@@ -54,6 +63,7 @@ public class BookController {
         bookService.save(title, genre, averageRating, authorId);
         return "redirect:/books";
     }
+
     @PostMapping("/edit/{bookId}")
     public String editBook(@PathVariable Long bookId,
                            @RequestParam String title,
@@ -64,11 +74,13 @@ public class BookController {
         bookService.edit(bookId, title, genre, averageRating, authorId);
         return "redirect:/books";
     }
+
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
         return "redirect:/books";
     }
+
     @GetMapping
     public String getBooksPage(@RequestParam(required = false) String error,
                                @RequestParam(required = false) String titleSearch,
@@ -80,6 +92,7 @@ public class BookController {
             model.addAttribute("error", error);
         }
 
+<<<<<<< HEAD
         List<Book> books;
 
         if (titleSearch != null && !titleSearch.isEmpty()) {
@@ -102,6 +115,29 @@ public class BookController {
         model.addAttribute("minRating", minRating);
         model.addAttribute("books", books);
         model.addAttribute("authorBookCounts", authorBookCounts);
+=======
+        // keep search values in the form
+        model.addAttribute("titleSearch", titleSearch);
+        model.addAttribute("minRating", minRating);
+
+        // all books (use your filtered method here if you have one)
+        List<Book> books = bookService.listAll();
+        model.addAttribute("books", books);
+
+        // 👇 author -> number of books
+        Map<mk.finki.ukim.wp.lab.model.Author, Long> authorBookCounts =
+                books.stream()
+                        .collect(Collectors.groupingBy(
+                                Book::getAuthor,
+                                Collectors.counting()
+                        ));
+
+        // send the map to Thymeleaf
+        model.addAttribute("authorBookCounts", authorBookCounts);
+
+>>>>>>> 714a0a1f6a8155138b5d3e75c75cf2a994e2451a
         return "listBooks"; // listBooks.html
     }
+
+
 }

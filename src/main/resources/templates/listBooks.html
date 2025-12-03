@@ -157,8 +157,41 @@
 
       <hr />
 
+<<<<<<< HEAD
       <!-- Reservation form (задржано од Лаб 1, само малку подобрено) -->
       <form th:action="@{/bookReservation}" method="post">
+=======
+    <!-- SEPARATE TABLE: AUTHORS + COUNT -->
+    <h2>Authors and Book Count</h2>
+    <hr/>
+
+    <h2>Authors and Book Count</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- iterate over entries in the map authorBookCounts -->
+        <tr th:each="entry : ${authorBookCounts}">
+            <td th:text="${entry.key.name + ' ' + entry.key.surname}">
+                Author Name
+            </td>
+            <td th:text="${entry.value}">
+                0
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <hr/>
+
+    <!-- Reservation form (задржано од Лаб 1) -->
+    <form th:action="@{/bookReservation}" method="post">
+>>>>>>> 714a0a1f6a8155138b5d3e75c75cf2a994e2451a
         <h2>Choose a book:</h2>
         <div class="book-option" th:each="book : ${books}">
           <label>
