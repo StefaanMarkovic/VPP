@@ -10,4 +10,7 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAllByAuthor_Id(Long authorId);
     Long countByAuthor_Id(Long authorId);
+
+    List<Book> findAllByOrderByAuthor_NameAsc();
+    List<Book> findAllByAverageRatingGreaterThanEqualOrderByAuthor_NameAsc(Double minRating);
 }

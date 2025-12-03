@@ -52,10 +52,12 @@ public class BookListServlet extends HttpServlet {
 
         List<Book> books;
 
-        if ((titleSearch != null && !titleSearch.isEmpty()) || minRating != null) {
-            books = bookService.searchBooks(titleSearch,minRating);
-        }else{
-            books = bookService.listAll();
+        if (titleSearch != null && !titleSearch.isEmpty()) {
+            books = bookService.searchBooks(titleSearch, minRating);
+        } else if (minRating != null) {
+            books = bookService.filterByMinRating(minRating);
+        } else {
+            books = bookService.listAllSortedByAuthorName();
         }
 
         Map<Long, Long> authorBookCounts = new HashMap<>();

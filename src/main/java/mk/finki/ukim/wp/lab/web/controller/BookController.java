@@ -71,6 +71,8 @@ public class BookController {
     }
     @GetMapping
     public String getBooksPage(@RequestParam(required = false) String error,
+                               @RequestParam(required = false) String titleSearch,
+                               @RequestParam(required = false) Double minRating,
                                Model model) {
 
         if (error != null && !error.isEmpty()) {
@@ -78,9 +80,17 @@ public class BookController {
             model.addAttribute("error", error);
         }
 
-        List<Book> books = bookService.listAll();
-        Map<Long, Long> authorBookCounts = new HashMap<>();
+        List<Book> books;
 
+        if (titleSearch != null && !titleSearch.isEmpty()) {
+            books = bookService.searchBooks(titleSearch, minRating);
+        } else if (minRating != null) {
+            books = bookService.filterByMinRating(minRating);
+        } else {
+            books = bookService.listAllSortedByAuthorName();
+        }
+
+        Map<Long, Long> authorBookCounts = new HashMap<>();
         for (Book book : books) {
             Long authorId = book.getAuthor().getId();
             if (!authorBookCounts.containsKey(authorId)) {
@@ -88,6 +98,8 @@ public class BookController {
             }
         }
 
+        model.addAttribute("titleSearch", titleSearch);
+        model.addAttribute("minRating", minRating);
         model.addAttribute("books", books);
         model.addAttribute("authorBookCounts", authorBookCounts);
         return "listBooks"; // listBooks.html

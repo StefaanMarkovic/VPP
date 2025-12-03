@@ -27,6 +27,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> listAllSortedByAuthorName() {
+        return bookRepository.findAllByOrderByAuthor_NameAsc();
+    }
+
+    @Override
+    public List<Book> filterByMinRating(Double minRating) {
+        if (minRating == null) {
+            return listAllSortedByAuthorName();
+        }
+        return bookRepository.findAllByAverageRatingGreaterThanEqualOrderByAuthor_NameAsc(minRating);
+    }
+
+    @Override
     public List<Book> searchBooks(String text, Double rating) {
         return bookRepository.findAll().stream()
                 .filter(book -> {

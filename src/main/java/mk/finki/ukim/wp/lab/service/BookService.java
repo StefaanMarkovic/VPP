@@ -7,6 +7,8 @@ import java.util.SplittableRandom;
 
 public interface BookService {
     List<Book> listAll();
+    List<Book> listAllSortedByAuthorName();
+    List<Book> filterByMinRating(Double minRating);
     List<Book> searchBooks(String text, Double rating);
     Book save(String title, String genre, Double averageRating, Long authorId);
     Book edit(Long id, String title, String genre, Double averageRating, Long authorId);
