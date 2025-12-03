@@ -130,7 +130,7 @@
             <td th:text="${book.author.name + ' ' + book.author.surname}">
               Author Name
             </td>
-            <td th:text="${authorBookCounts[book.author.id]}">0</td>
+            <td th:text="${authorBookCounts.get(book.author.id)}">0</td>
             <td>
               <!-- Edit (GET) -->
               <a
