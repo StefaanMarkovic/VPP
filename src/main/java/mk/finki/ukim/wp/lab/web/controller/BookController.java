@@ -7,21 +7,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
     private final AuthorService authorService;
-    // constructor injection (Spring ќе го наполни BookService)
+
+    // constructor injection
     public BookController(BookService bookService, AuthorService authorService) {
         this.bookService = bookService;
         this.authorService = authorService;
     }
+
     @GetMapping("/book-form")
     public String getAddBookPage(Model model) {
 
-        model.addAttribute("book", null); // add режим
+        // add режим – немаме постоечка книга
+        model.addAttribute("book", null);
         model.addAttribute("authors", authorService.findAll());
 
         return "book-form";
@@ -50,6 +57,7 @@ public class BookController {
         bookService.save(title, genre, averageRating, authorId);
         return "redirect:/books";
     }
+
     @PostMapping("/edit/{bookId}")
     public String editBook(@PathVariable Long bookId,
                            @RequestParam String title,
@@ -60,13 +68,17 @@ public class BookController {
         bookService.edit(bookId, title, genre, averageRating, authorId);
         return "redirect:/books";
     }
+
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
         return "redirect:/books";
     }
+
     @GetMapping
     public String getBooksPage(@RequestParam(required = false) String error,
+                               @RequestParam(required = false) String titleSearch,
+                               @RequestParam(required = false) Double minRating,
                                Model model) {
 
         if (error != null && !error.isEmpty()) {
@@ -74,7 +86,27 @@ public class BookController {
             model.addAttribute("error", error);
         }
 
-        model.addAttribute("books", bookService.listAll()); // сите книги
+        // keep search values in the form
+        model.addAttribute("titleSearch", titleSearch);
+        model.addAttribute("minRating", minRating);
+
+        // all books (use your filtered method here if you have one)
+        List<Book> books = bookService.listAll();
+        model.addAttribute("books", books);
+
+        // 👇 author -> number of books
+        Map<mk.finki.ukim.wp.lab.model.Author, Long> authorBookCounts =
+                books.stream()
+                        .collect(Collectors.groupingBy(
+                                Book::getAuthor,
+                                Collectors.counting()
+                        ));
+
+        // send the map to Thymeleaf
+        model.addAttribute("authorBookCounts", authorBookCounts);
+
         return "listBooks"; // listBooks.html
     }
+
+
 }
