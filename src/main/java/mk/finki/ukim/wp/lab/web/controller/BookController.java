@@ -7,15 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-=======
+
+import java.util.*;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
->>>>>>> 714a0a1f6a8155138b5d3e75c75cf2a994e2451a
+
 
 @Controller
 @RequestMapping("/books")
@@ -92,7 +90,7 @@ public class BookController {
             model.addAttribute("error", error);
         }
 
-<<<<<<< HEAD
+
         List<Book> books;
 
         if (titleSearch != null && !titleSearch.isEmpty()) {
@@ -103,30 +101,30 @@ public class BookController {
             books = bookService.listAllSortedByAuthorName();
         }
 
-        Map<Long, Long> authorBookCounts = new HashMap<>();
-        for (Book book : books) {
-            Long authorId = book.getAuthor().getId();
-            if (!authorBookCounts.containsKey(authorId)) {
-                authorBookCounts.put(authorId, bookService.countBooksByAuthorId(authorId));
-            }
-        }
+//        Map<Long, Long> authorBookCounts = new HashMap<>();
+//        for (Book book : books) {
+//            Long authorId = book.getAuthor().getId();
+//            if (!authorBookCounts.containsKey(authorId)) {
+//                authorBookCounts.put(authorId, bookService.countBooksByAuthorId(authorId));
+//            }
+//        }
 
         model.addAttribute("titleSearch", titleSearch);
         model.addAttribute("minRating", minRating);
         model.addAttribute("books", books);
-        model.addAttribute("authorBookCounts", authorBookCounts);
-=======
+//        model.addAttribute("authorBookCounts", authorBookCounts);
+
         // keep search values in the form
         model.addAttribute("titleSearch", titleSearch);
         model.addAttribute("minRating", minRating);
 
         // all books (use your filtered method here if you have one)
-        List<Book> books = bookService.listAll();
+        List<Book> all_books = bookService.listAll();
         model.addAttribute("books", books);
 
         // 👇 author -> number of books
         Map<mk.finki.ukim.wp.lab.model.Author, Long> authorBookCounts =
-                books.stream()
+                all_books.stream()
                         .collect(Collectors.groupingBy(
                                 Book::getAuthor,
                                 Collectors.counting()
@@ -135,7 +133,7 @@ public class BookController {
         // send the map to Thymeleaf
         model.addAttribute("authorBookCounts", authorBookCounts);
 
->>>>>>> 714a0a1f6a8155138b5d3e75c75cf2a994e2451a
+
         return "listBooks"; // listBooks.html
     }
 

@@ -140,7 +140,6 @@
                 Edit
               </a>
 
-              &nbsp;|&nbsp;
 
               <!-- Delete (POST, како што бара задачата) -->
               <form
@@ -157,10 +156,10 @@
 
       <hr />
 
-<<<<<<< HEAD
+
       <!-- Reservation form (задржано од Лаб 1, само малку подобрено) -->
       <form th:action="@{/bookReservation}" method="post">
-=======
+
     <!-- SEPARATE TABLE: AUTHORS + COUNT -->
     <h2>Authors and Book Count</h2>
     <hr/>
@@ -191,7 +190,7 @@
 
     <!-- Reservation form (задржано од Лаб 1) -->
     <form th:action="@{/bookReservation}" method="post">
->>>>>>> 714a0a1f6a8155138b5d3e75c75cf2a994e2451a
+
         <h2>Choose a book:</h2>
         <div class="book-option" th:each="book : ${books}">
           <label>
@@ -207,6 +206,7 @@
             </span>
           </label>
         </div>
+
 
         <h2>Enter your information:</h2>
         <label>Your Name:</label>
@@ -225,6 +225,7 @@
         <br />
         <input type="submit" value="Reserve Book" />
       </form>
-    </main>
+
+      </main>
   </body>
 </html>
