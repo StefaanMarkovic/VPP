@@ -119,7 +119,7 @@ public class BookController {
         model.addAttribute("minRating", minRating);
 
         // all books (use your filtered method here if you have one)
-        List<Book> all_books = bookService.listAll();
+        List<Book> all_books = bookService.findAllByOrderByAuthor();
         model.addAttribute("books", books);
 
         // 👇 author -> number of books

@@ -92,4 +92,8 @@ public class BookServiceImpl implements BookService {
         return bookRepository.countByAuthor_Id(authorId);
     }
 
+    @Override
+    public List<Book>findAllByOrderByAuthor(){
+        return bookRepository.findAllByOrderByAuthor_NameAsc();
+    }
 }

@@ -16,8 +16,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAllByOrderByAuthor_NameAsc();
     List<Book> findAllByAverageRatingGreaterThanEqualOrderByAuthor_NameAsc(Double minRating);
 
-    @Query("SELECT b.author.id, COUNT(b) FROM Book b GROUP BY b.author.id")
-    List<Object[]> countBooksByAuthor();
+//    @Query("SELECT b.author.id, COUNT(b) FROM Book b GROUP BY b.author.id")
+//    List<Object[]> countBooksByAuthor();
+    @Query("SELECT b FROM Book b JOIN b.author a ORDER BY a.surname ASC ")
+    List<Book> findAllByOrderByAuthor_SurnameAsc();
 
 
 }

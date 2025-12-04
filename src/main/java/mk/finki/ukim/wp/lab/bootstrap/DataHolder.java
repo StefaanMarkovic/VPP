@@ -28,13 +28,20 @@ public class DataHolder {
             Author a3 = new Author(null, "Fyodor", "Dostoevsky", "Russia",
                     "Author of Crime and Punishment.");
 
+            Author a4 = new Author(null ,"ALEKS","ALEKSOV","SERIVA","NEMA" );
+            Author a5 = new Author(null ,"BLEKS","BLEKSOV","SERBIA","NEMA" );
+
             a1 = authorRepository.save(a1);
             a2 = authorRepository.save(a2);
             a3 = authorRepository.save(a3);
+            a4 = authorRepository.save(a4);
+            a5 = authorRepository.save(a5);
 
             bookRepository.save(new Book(null, "1984", "Dystopian", 4.8, a1));
             bookRepository.save(new Book(null, "The Hobbit", "Fantasy", 4.7, a2));
             bookRepository.save(new Book(null, "Crime and Punishment", "Classic", 4.9, a3));
+            bookRepository.save(new Book(null, "The Hobbit", "Fantasy", 4.9, a4));
+            bookRepository.save(new Book(null, "The Hobbit", "Fantasy", 4.9, a5));
         }
     }
 }
