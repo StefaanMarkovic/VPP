@@ -15,4 +15,5 @@ public interface BookService {
     void deleteById(Long id);
     Book findById(Long id);
     Long countBooksByAuthorId(Long authorId);
+    List<Book> findAllByOrderByAuthor();
 }
