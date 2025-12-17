@@ -3,6 +3,7 @@ package mk.finki.ukim.wp.lab.web.controller;
 import mk.finki.ukim.wp.lab.model.Book;
 import mk.finki.ukim.wp.lab.service.AuthorService;
 import mk.finki.ukim.wp.lab.service.BookService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class BookController {
         this.authorService = authorService;
     }
 
+
     @GetMapping("/book-form")
     public String getAddBookPage(Model model) {
 
@@ -37,6 +39,7 @@ public class BookController {
 
         return "book-form";
     }
+
 
     @GetMapping("/book-form/{id}")
     public String getEditBookForm(@PathVariable Long id, Model model) {
@@ -52,6 +55,7 @@ public class BookController {
         return "book-form"; // го рендерира book-form.html
     }
 
+
     @PostMapping("/add")
     public String saveBook(@RequestParam String title,
                            @RequestParam String genre,
@@ -61,6 +65,7 @@ public class BookController {
         bookService.save(title, genre, averageRating, authorId);
         return "redirect:/books";
     }
+
 
     @PostMapping("/edit/{bookId}")
     public String editBook(@PathVariable Long bookId,
@@ -73,11 +78,13 @@ public class BookController {
         return "redirect:/books";
     }
 
+
     @PostMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
         return "redirect:/books";
     }
+
 
     @GetMapping
     public String getBooksPage(@RequestParam(required = false) String error,
@@ -112,17 +119,16 @@ public class BookController {
         model.addAttribute("titleSearch", titleSearch);
         model.addAttribute("minRating", minRating);
         model.addAttribute("books", books);
-//        model.addAttribute("authorBookCounts", authorBookCounts);
 
-        // keep search values in the form
+
         model.addAttribute("titleSearch", titleSearch);
         model.addAttribute("minRating", minRating);
 
-        // all books (use your filtered method here if you have one)
+
         List<Book> all_books = bookService.listAll();
         model.addAttribute("books", books);
 
-        // 👇 author -> number of books
+
         Map<mk.finki.ukim.wp.lab.model.Author, Long> authorBookCounts =
                 all_books.stream()
                         .collect(Collectors.groupingBy(
@@ -130,11 +136,11 @@ public class BookController {
                                 Collectors.counting()
                         ));
 
-        // send the map to Thymeleaf
+
         model.addAttribute("authorBookCounts", authorBookCounts);
 
 
-        return "listBooks"; // listBooks.html
+        return "listBooks";
     }
 
 

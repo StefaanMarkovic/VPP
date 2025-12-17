@@ -3,6 +3,8 @@
   lang="en"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+
 >
   <head>
     <meta charset="utf-8" />
@@ -67,7 +69,7 @@
     <header>
       <h1>Welcome to our Book Reservation App</h1>
     </header>
-    <main>
+    <form>
       <!-- Search form (од Лаб 1) -->
       <div class="search-box">
         <form th:action="@{/books}" method="get">
@@ -106,11 +108,11 @@
       </div>
 
       <!-- Add Book копче (Лаб 2) -->
-      <div style="margin-top: 20px; margin-bottom: 10px">
-        <a th:href="@{/books/book-form}" class="btn btn-add"> Add Book </a>
-      </div>
+        <div sec:authorize="hasRole('ADMIN')" style="margin-top: 20px; margin-bottom: 10px">
+            <a th:href="@{/books/book-form}" class="btn btn-add"> Add Book </a>
+        </div>
 
-      <!-- Табела со сите книги (Лаб 2) -->
+        <!-- Табела со сите книги (Лаб 2) -->
       <table>
         <thead>
           <tr>
@@ -131,25 +133,16 @@
               Author Name
             </td>
             <td th:text="${authorBookCounts.get(book.author.id)}">0</td>
-            <td>
-              <!-- Edit (GET) -->
-              <a
-                th:href="@{'/books/book-form/' + ${book.id}}"
-                class="btn btn-edit"
-              >
-                Edit
-              </a>
+              <td>
+                  <div sec:authorize="hasRole('ADMIN')">
+                      <a th:href="@{'/books/book-form/' + ${book.id}}" class="btn btn-edit">Edit</a>
 
+                      <form th:action="@{'/books/delete/' + ${book.id}}" method="post" style="display:inline">
+                          <button type="submit" class="btn btn-delete">Delete</button>
+                      </form>
+                  </div>
+              </td>
 
-              <!-- Delete (POST, како што бара задачата) -->
-              <form
-                th:action="@{'/books/delete/' + ${book.id}}"
-                method="post"
-                style="display: inline"
-              >
-                <button type="submit" class="btn btn-delete">Delete</button>
-              </form>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -226,6 +219,8 @@
         <input type="submit" value="Reserve Book" />
       </form>
 
-      </main>
+      </form>
+    </form>
+
   </body>
 </html>
